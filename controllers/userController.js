@@ -50,7 +50,7 @@ exports.updateAccount = async (req, res) => {
     email: req.body.email,
   };
 
-  const user = await User.findOneAndUpdate(
+  await User.findOneAndUpdate(
     { _id: req.user._id },
     { $set: updates },
     { new: true, runValidators: true, context: 'query' },
