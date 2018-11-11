@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+
 const User = mongoose.model('User');
 const promisify = require('es6-promisify');
 
@@ -17,7 +18,7 @@ exports.validateRegister = (req, res, next) => {
   req.sanitizeBody('email').normalizeEmail({
     remove_dots: false,
     remove_extension: false,
-    gmail_remove_subaddress: false
+    gmail_remove_subaddress: false,
   });
   req.checkBody('password', 'Password cannot be blank!').notEmpty();
   req.checkBody('password-confirm', 'Confirmed Password cannot be blank!').notEmpty();
@@ -46,14 +47,14 @@ exports.account = (req, res) => {
 exports.updateAccount = async (req, res) => {
   const updates = {
     name: req.body.name,
-    email: req.body.email
+    email: req.body.email,
   };
 
   const user = await User.findOneAndUpdate(
     { _id: req.user._id },
     { $set: updates },
-    { new: true, runValidators: true, context: 'query' }
+    { new: true, runValidators: true, context: 'query' },
   );
 
   res.redirect('back');
-}
+};

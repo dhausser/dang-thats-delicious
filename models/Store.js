@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+
 mongoose.Promise = global.Promise;
 const slug = require('slugs');
 
@@ -45,18 +46,18 @@ storeSchema.pre('save', async function (next) {
   const slugRegExp = new RegExp(`^(${this.slug})((-[0-9]*$)?)$`, 'i');
   const storesWithSlug = await this.constructor.find({ slug: slugRegExp });
   if (storesWithSlug) {
-    this.slug = `${this.slug}-${storesWithSlug.length + 1}`
+    this.slug = `${this.slug}-${storesWithSlug.length + 1}`;
   }
   next();
   // TODO make more resiliant so slugs are unique
 });
 
-storeSchema.statics.getTagsList = function() {
+storeSchema.statics.getTagsList = function () {
   return this.aggregate([
     { $unwind: '$tags' },
     { $group: { _id: '$tags', count: { $sum: 1 } } },
-    { $sort: { count: -1 } }
+    { $sort: { count: -1 } },
   ]);
-}
+};
 
 module.exports = mongoose.model('Store', storeSchema);

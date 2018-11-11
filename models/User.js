@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+
+const { Schema } = mongoose;
 mongoose.Promise = global.Promise;
 const md5 = require('md5');
 const validator = require('validator');
@@ -13,15 +14,15 @@ const userSchema = new Schema({
     lowercase: true,
     trim: true,
     validate: [validator.isEmail, 'Invalid Email Address'],
-    require: 'Please supply an email address'
+    require: 'Please supply an email address',
   },
   name: {
     type: String,
     required: 'Please supply a name',
-    trim: true
+    trim: true,
   },
   resetPasswordToken: String,
-  resetPasswordExpires: Date
+  resetPasswordExpires: Date,
 });
 
 userSchema.virtual('gravatar').get(function () {
