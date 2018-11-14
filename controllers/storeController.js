@@ -7,7 +7,7 @@ const uuid = require('uuid');
 
 const multerOptions = {
   storage: multer.memoryStorage(),
-  fileFilter(req, file, next) {
+  fileFilter (req, file, next) {
     const isPhoto = file.mimetype.startsWith('image/');
     if (isPhoto) {
       next(null, true);
@@ -33,7 +33,7 @@ exports.resize = async (req, res, next) => {
     next(); // skip to the next middleware
     return;
   }
-  const extension = req.file.mimetype.split('/')[1];
+  const extension = req.file.mimetype.split('/')[ 1 ];
   req.body.photo = `${uuid.v4()}.${extension}`;
   // now we resize
   const photo = await jimp.read(req.file.buffer);
@@ -100,7 +100,7 @@ exports.getStoresByTag = async (req, res) => {
   const tagQuery = tag || { $exists: true };
   const tagsPromise = Store.getTagsList();
   const storesPromise = Store.find({ tags: tagQuery });
-  const [tags, stores] = await Promise.all([tagsPromise, storesPromise]);
+  const [ tags, stores ] = await Promise.all([ tagsPromise, storesPromise ]);
   res.render('tag', {
     tags, title: 'Tags', tag, stores,
   });
@@ -112,8 +112,8 @@ exports.searchStores = async (req, res) => {
       $search: req.query.q,
     },
   }, {
-    score: { $meta: 'textScore' },
-  })
+      score: { $meta: 'textScore' },
+    })
     // then sort them
     .sort({
       score: { $meta: 'textScore' },
@@ -124,7 +124,7 @@ exports.searchStores = async (req, res) => {
 };
 
 exports.mapStores = async (req, res) => {
-  const coordinates = [req.query.lng, req.query.lat].map(parseFloat);
+  const coordinates = [ req.query.lng, req.query.lat ].map(parseFloat);
   const q = {
     location: {
       $near: {
@@ -141,16 +141,23 @@ exports.mapStores = async (req, res) => {
 };
 
 exports.mapPage = (req, res) => {
-  res.render('map', { title: 'Map'});
+  res.render('map', { title: 'Map' });
 };
 
 exports.heartStore = async (req, res) => {
   const hearts = req.user.hearts.map(obj => obj.toString());
   const operator = hearts.includes(req.params.id) ? '$pull' : '$addToSet';
   const user = await User
-  .findByIdAndUpdate(req.user._id,
-    { [operator]: { hearts: req.params.id } },
-    { new: true }
-  );
+    .findByIdAndUpdate(req.user._id,
+      { [ operator ]: { hearts: req.params.id } },
+      { new: true }
+    );
   res.json(user);
 }
+
+exports.getHearts = async (req, res) => {
+  const stores = await Store.find({
+    _id: { $in: req.user.hearts }
+  });
+  res.render('stores', { title: 'Hearted Stores', stores });
+};
