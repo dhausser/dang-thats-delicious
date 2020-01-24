@@ -1,12 +1,12 @@
 {
-  "name": "dang-thats-delicious",
+  "name": "wes-loves-snacks",
   "version": "0.0.1",
   "private": true,
   "engines": {
     "node": ">= 7.6.0"
   },
   "now": {
-    "dotenv": ".env.now"
+    "dotenv": "variables.env.now"
   },
   "scripts": {
     "start": "node ./start.js",

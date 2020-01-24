@@ -17,7 +17,7 @@ const generateHTML = (filename, options = {}) => {
   const html = pug.renderFile(`${__dirname}/../views/email/${filename}.pug`, options);
   const inlined = juice(html);
   return inlined;
-}
+};
 
 exports.send = async (options) => {
   const html = generateHTML(options.filename, options);
@@ -28,7 +28,7 @@ exports.send = async (options) => {
     subject: options.subject,
     html,
     text
-  }
+  };
   const sendMail = promisify(transport.sendMail, transport);
   return sendMail(mailOptions);
-}
+};

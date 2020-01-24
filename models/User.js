@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
-
-const { Schema } = mongoose;
+const Schema = mongoose.Schema;
 mongoose.Promise = global.Promise;
 const md5 = require('md5');
 const validator = require('validator');
@@ -14,12 +13,12 @@ const userSchema = new Schema({
     lowercase: true,
     trim: true,
     validate: [validator.isEmail, 'Invalid Email Address'],
-    require: 'Please supply an email address',
+    required: 'Please Supply an email address'
   },
   name: {
     type: String,
     required: 'Please supply a name',
-    trim: true,
+    trim: true
   },
   resetPasswordToken: String,
   resetPasswordExpires: Date,
@@ -28,7 +27,7 @@ const userSchema = new Schema({
   ]
 });
 
-userSchema.virtual('gravatar').get(function () {
+userSchema.virtual('gravatar').get(function() {
   const hash = md5(this.email);
   return `https://gravatar.com/avatar/${hash}?s=200`;
 });
