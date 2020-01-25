@@ -67,6 +67,8 @@ app.use((req, res, next) => {
 });
 
 // After allllll that above middleware, we finally handle our own routes!
+console.log(`Store controller reached!`)
+
 app.use('/', routes);
 
 // If that above routes didnt work, we 404 them and forward to error handler
