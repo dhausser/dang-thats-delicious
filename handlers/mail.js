@@ -32,3 +32,16 @@ exports.send = async (options) => {
   const sendMail = promisify(transport.sendMail, transport);
   return sendMail(mailOptions);
 };
+
+// using Twilio SendGrid's v3 Node.js Library
+// https://github.com/sendgrid/sendgrid-nodejs
+// const sgMail = require('@sendgrid/mail');
+// sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+// const msg = {
+//   to: 'davy.hausser@gmail.com',
+//   from: 'davy.hausser@gmail.com',
+//   subject: 'Sending with Twilio SendGrid is Fun',
+//   text: 'and easy to do anywhere, even with Node.js',
+//   html: '<strong>and easy to do anywhere, even with Node.js</strong>',
+// };
+// sgMail.send(msg);
